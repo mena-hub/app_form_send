@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <!--Librerías-->
+    {% load bootstrap4 %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %} | Class-Based Views</title>
+    <!-- Fuentes -->
+    <link href="{% static 'favicon.ico' %}" rel="shortcut icon" type="image/png">
+    <link href='https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i' rel="stylesheet">
+    <!--Estilo-->
+    {% bootstrap_css %}
+    <link href="{% static 'core/css/contact.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!--Contenido-->
+    {% block content %} {% endblock %}
+    <!--Javascript-->
+    {% bootstrap_javascript jquery='full' %}
+</body>
+</html>
