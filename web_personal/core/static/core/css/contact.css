@@ -1,0 +1,14 @@
+section {
+    padding: 3rem 0;
+}
+
+h1, h2, h3, h4, h5, h6, ul {
+    font-family: 'Raleway';
+    font-weight: 400;
+}
+
+.close {
+    color: #f8f9fa;
+    text-shadow: none;
+    opacity: 0.5;
+}
