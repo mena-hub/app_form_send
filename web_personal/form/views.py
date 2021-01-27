@@ -1,38 +1,35 @@
-from django.shortcuts import render
-
-from django.conf import settings
-
-from django.utils import timezone
-
+from django.views.generic.edit import FormView
+from django.urls import reverse_lazy
 from django.core.mail import EmailMessage
+from django.contrib import messages
+from .forms import ContactForm
 
-from .form import EmailsForm
+class ContactView(FormView):
+    template_name = "form/contact.html"
+    form_class = ContactForm
 
-def email(request):
+    def form_valid(self, form):
+        try:
+            self.send_email(form.cleaned_data)
+            messages.success(self.request, 'Envío oka.')
+        except:
+            messages.error(self.request, 'Envío error.')
+        return super(ContactView, self).form_valid(form)
 
-     if request.method == 'POST':
-         
-         form = EmailsForm(request.POST)
+    @staticmethod
+    def send_email(valid_data):
+        name = valid_data.get('name')
+        email = valid_data.get('email')
+        content = valid_data.get('content')
+        # Inicializar 
+        email = EmailMessage(
+            "Contacto: Nuevo mensaje",
+            "De {} <{}>\n\n{}".format(name, email, content),
+            "no-contestar@inbox.mailtrap.io",
+            ["mssz.nnia@gmail.com"],
+            reply_to=[email],
+        )
+        email.send()
 
-         if form.is_valid():
-
-             instance = form.save(commit=False)
-             
-             email = form.cleaned_data.get('email')
-             subject = form.cleaned_data.get('subject')
-             message = form.cleaned_data.get('message')
-             
-             instance.publish_date = timezone.now()
-             
-             instance.save()
-             
-             email_from = settings.EMAIL_HOST_USER
-             recipient_list = [email]
-             email = EmailMessage(subject, message, email_from, recipient_list)
-             email.send()
-
-     else:
-         
-         form = EmailsForm()
-
-     return render(request, 'form/form.html', {'form': form})
+    def get_success_url(self):
+        return reverse_lazy("contact")
