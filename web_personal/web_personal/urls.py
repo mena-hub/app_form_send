@@ -1,8 +1,7 @@
 from django.contrib import admin
-from django.urls import path
-from form import views
+from django.urls import path, include
 
 urlpatterns = [
-    path('', views.email, name='email'),
+    path('', include('form.urls')),
     path('admin/', admin.site.urls),
 ]
